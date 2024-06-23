@@ -17,25 +17,40 @@
       </v-data-table>
     </v-container>
 
+    <!-- Modal de Edição -->
     <ModalEdit
       :dialog="dialog"
       :editedItem="editedItem"
       @close="closeModal"
       @save="saveChanges"
     />
+
+    <!-- Modal de Exclusão -->
+    <ModalDelete
+      :dialog="dialogDelete"
+      :idAluno="idAluno"
+      @close="closeModal"
+      @delete="deleteAluno"
+    />
   </div>
 </template>
 
 <script>
 import ModalEdit from "./ModalEdit.vue";
+import ModalDelete from "./ModalDelete.vue";
 
 export default {
   components: {
     ModalEdit,
+    ModalDelete,
   },
   data() {
     return {
-      dialog: false,
+      idAluno: {
+        id: null,
+      },
+      dialog: false, // Modal de edição
+      dialogDelete: false, // Modal de exclusão
       editedItem: {
         id: null,
         nome: "",
@@ -44,7 +59,7 @@ export default {
         nota_2: null,
       },
       headers: [
-        { title: "Nome", align: "start", sortable: false, key: "nome" },
+        { title: "Nome", align: "start", key: "nome" },
         { title: "Sobrenome", align: "end", key: "sobrenome" },
         { title: "Nota A1", align: "end", key: "nota_1" },
         { title: "Nota A2", align: "end", key: "nota_2" },
@@ -62,11 +77,12 @@ export default {
       this.dialog = true; // Abre o modal de edição
     },
     deleteItem(item) {
-      console.log("Excluir item:", item);
-      // Implemente a lógica de exclusão aqui, se necessário
+      this.idAluno = item; // Define o item a ser deletado
+      this.dialogDelete = true; // Abre o modal de exclusão
     },
     closeModal() {
       this.dialog = false; // Fecha o modal de edição
+      this.dialogDelete = false; // Fecha o modal de exclusão
     },
     async saveChanges(editedAluno) {
       try {
@@ -83,6 +99,14 @@ export default {
         this.closeModal(); // Fecha o modal após salvar
       } catch (error) {
         console.error("Erro ao atualizar aluno:", error.message);
+      }
+    },
+    async deleteAluno(idItem) {
+      try {
+        await this.$store.dispatch("deleteAlunos", idItem.id);
+        this.closeModal();
+      } catch (error) {
+        console.error("Erro ao excluir aluno:", error.message);
       }
     },
   },
