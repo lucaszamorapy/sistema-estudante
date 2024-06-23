@@ -13,15 +13,32 @@ const store = createStore({
   },
   actions: {
     async getAlunos({ commit }) {
-      const response = await axios.get("http://localhost:8802/");
-      commit("setAlunos", response.data);
-    },
-    async postAlunos(context, alunoData) {
       try {
-        const response = await axios.post("http://localhost:8802/", alunoData);
-        return response.data;
+        const response = await axios.get("http://localhost:8802/");
+        commit("setAlunos", response.data);
       } catch (error) {
-        throw new Error("Falha ao postar dados do aluno: " + error.message);
+        throw new Error("Falha ao obter alunos: " + error.message);
+      }
+    },
+    async updateAlunos({ commit }, { id, alunoData }) {
+      try {
+        const response = await axios.put(
+          `http://localhost:8802/${id}`,
+          alunoData
+        );
+        commit("setAlunos", response.data); // Atualiza a lista de alunos no state
+        return response.data; // Retorna os dados atualizados do aluno
+      } catch (error) {
+        throw new Error("Falha ao atualizar dados do aluno: " + error.message);
+      }
+    },
+    async deleteAlunos({ commit }, id) {
+      try {
+        const response = await axios.delete(`http://localhost:8802/${id}`);
+        commit("setAlunos", response.data); // Atualiza a lista de alunos no state
+        return response.data; // Retorna os dados atualizados do aluno
+      } catch (error) {
+        throw new Error("Falha ao atualizar dados do aluno: " + error.message);
       }
     },
   },
