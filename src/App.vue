@@ -1,22 +1,21 @@
 <template>
   <v-app>
-    <v-main>
-      <div v-for="(aluno, index) in $store.state.alunos" :key="index">
-        <p>{{ aluno.nome }}</p>
-      </div>
+    <v-main class="container">
+      <FormsAlunos />
+      <GridAlunos />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import FormsAlunos from "./components/FormsAlunos.vue";
+import GridAlunos from "./components/GridAlunos.vue";
 export default {
+  components: { FormsAlunos, GridAlunos },
   name: "App",
 
   data: () => ({
     //
   }),
-  created() {
-    this.$store.dispatch("getAlunos");
-  },
 };
 </script>
