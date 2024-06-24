@@ -18,7 +18,6 @@
       </v-data-table>
     </v-container>
 
-    <!-- Modal de Edição -->
     <ModalEdit
       :dialog="dialog"
       :editedItem="editedItem"
@@ -26,7 +25,6 @@
       @save="saveChanges"
     />
 
-    <!-- Modal de Exclusão -->
     <ModalDelete
       :dialog="dialogDelete"
       :idAluno="idAluno"

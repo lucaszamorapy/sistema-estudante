@@ -64,23 +64,22 @@ export default {
   },
   watch: {
     dialog(newVal) {
-      // Quando a prop dialog mudar, atualiza localDialog para manter sincronia
+      // Quando a prop dialog mudar, atualiza localDialog para manter sincronia, useEffect da vida
       this.localDialog = newVal;
     },
-    editedItem: {
-      handler(newVal) {
-        // Copia os dados recebidos para a variável local editedAluno
-        this.editedAluno = { ...newVal };
-      },
-      immediate: true, // Ativa o watch imediatamente na montagem do componente
+
+    editedItem(newVal) {
+      // Copia os dados recebidos para a variável local editedAluno, useEffect da vida
+      this.editedAluno = { ...newVal };
     },
+    immediate: true, // Ativa o watch imediatamente na montagem do componente
   },
+
   methods: {
     close() {
       this.$emit("close");
     },
     save() {
-      // Emite os dados editados para o componente pai
       this.$emit("save", this.editedAluno);
     },
   },
