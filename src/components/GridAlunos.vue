@@ -69,6 +69,7 @@ export default {
   },
   created() {
     this.$store.dispatch("getAlunos");
+    console.log(this.$store.dispatch("getAlunos"));
   },
   methods: {
     editItem(item) {

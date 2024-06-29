@@ -20,25 +20,28 @@ const store = createStore({
         throw new Error("Falha ao obter alunos: " + error.message);
       }
     },
-    async updateAlunos({ commit }, { id, alunoData }) {
+    async updateAlunos({ dispatch }, { id, alunoData }) {
       try {
-        const response = await axios.put(
-          `http://localhost:8802/${id}`,
-          alunoData
-        );
-        commit("setAlunos", response.data); // Atualiza a lista de alunos no state
-        return response.data; // Retorna os dados atualizados do aluno
+        await axios.put(`http://localhost:8802/${id}`, alunoData);
+        await dispatch("getAlunos"); // Atualiza a lista de alunos chamando getAlunos
       } catch (error) {
         throw new Error("Falha ao atualizar dados do aluno: " + error.message);
       }
     },
-    async deleteAlunos({ commit }, id) {
+    async deleteAlunos({ dispatch }, id) {
       try {
-        const response = await axios.delete(`http://localhost:8802/${id}`);
-        commit("setAlunos", response.data); // Atualiza a lista de alunos no state
-        return response.data; // Retorna os dados atualizados do aluno
+        await axios.delete(`http://localhost:8802/${id}`);
+        await dispatch("getAlunos"); // Atualiza a lista de alunos chamando getAlunos
       } catch (error) {
-        throw new Error("Falha ao atualizar dados do aluno: " + error.message);
+        throw new Error("Falha ao excluir dados do aluno: " + error.message);
+      }
+    },
+    async postAlunos({ dispatch }, alunoData) {
+      try {
+        await axios.post(`http://localhost:8802/`, alunoData);
+        await dispatch("getAlunos"); // Atualiza a lista de alunos chamando getAlunos
+      } catch (error) {
+        throw new Error("Falha ao adicionar dados do aluno: " + error.message);
       }
     },
   },
