@@ -2,18 +2,36 @@
   <div class="mt-16">
     <v-container>
       <v-data-table
-        v-if="$store.state.alunos.length > 0"
         :headers="headers"
         :items="$store.state.alunos"
         density="compact"
         item-key="name"
         class="elevation-1"
       >
-        <template v-slot:[`item.actions`]="{ item }">
+        <!-- <template v-slot:[`item.actions`]="{ item }">
           <v-icon class="me-2" size="small" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon size="small" @click="deleteItem(item)"> mdi-delete </v-icon>
+        </template> -->
+        <template v-slot:item="{ item }">
+          <tr>
+            <!-- :class seria adicionar uma classe atraves de js -->
+            <!-- v-slot neste caso seria atribuir um slot para cada item, contendo seus td abaixos e suas ações -->
+            <td>{{ item.nome }}</td>
+            <td>{{ item.sobrenome }}</td>
+            <td>{{ item.nota_1 }}</td>
+            <td>{{ item.nota_2 }}</td>
+            <td :class="getRowClass(item)">{{ item.nota_final }}</td>
+            <td>
+              <v-icon class="me-2" size="small" @click="editItem(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon size="small" @click="deleteItem(item)">
+                mdi-delete
+              </v-icon>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </v-container>
@@ -59,19 +77,21 @@ export default {
       },
       headers: [
         { title: "Nome", align: "start", key: "nome" },
-        { title: "Sobrenome", align: "end", key: "sobrenome" },
-        { title: "Nota A1", align: "end", key: "nota_1" },
-        { title: "Nota A2", align: "end", key: "nota_2" },
-        { title: "Nota Final", align: "end", key: "nota_final" },
+        { title: "Sobrenome", align: "start", key: "sobrenome" },
+        { title: "Nota A1", align: "start", key: "nota_1" },
+        { title: "Nota A2", align: "start", key: "nota_2" },
+        { title: "Nota Final", align: "start", key: "nota_final" },
         { title: "Actions", key: "actions", sortable: false },
       ],
     };
   },
   created() {
     this.$store.dispatch("getAlunos");
-    console.log(this.$store.dispatch("getAlunos"));
   },
   methods: {
+    getRowClass(item) {
+      return item.nota_final < 6 ? "text-red" : "text-blue";
+    },
     editItem(item) {
       this.editedItem = { ...item }; // Copia os dados do aluno para a prop
       this.dialog = true; // Abre o modal de edição
@@ -115,3 +135,5 @@ export default {
 
 <style>
 </style>
+
+

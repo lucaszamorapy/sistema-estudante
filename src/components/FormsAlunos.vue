@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="">
     <v-sheet class="mx-auto mt-10" max-width="300">
       <v-form @submit.prevent="submit">
         <v-text-field
@@ -19,14 +19,12 @@
           :rules="[rules.required, rules.number, rules.min, rules.max]"
           label="Nota A1"
           class="w-full md:w-1/2 p-2"
-          type="number"
         ></v-text-field>
         <v-text-field
           v-model="nota2"
           :rules="[rules.required, rules.number, rules.min, rules.max]"
           label="Nota A2"
           class="w-full md:w-1/2 p-2"
-          type="number"
         ></v-text-field>
 
         <v-btn :loading="loading" class="mt-2 w-full" text type="submit" block>
@@ -87,5 +85,9 @@ export default {
 </script>
 
 <style>
-/* Adicione estilos adicionais aqui, se necessário */
+/* .form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
 </style>
