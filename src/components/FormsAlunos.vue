@@ -4,26 +4,26 @@
       <v-form @submit.prevent="submit">
         <v-text-field
           v-model="alunoNome"
-          :rules="rules"
+          :rules="[rules.required]"
           label="Nome do Aluno"
           class="w-full md:w-1/2 p-2"
         ></v-text-field>
         <v-text-field
           v-model="alunoSobrenome"
-          :rules="rules"
+          :rules="[rules.required]"
           label="Sobrenome do Aluno"
           class="w-full md:w-1/2 p-2"
         ></v-text-field>
         <v-text-field
           v-model="nota1"
-          :rules="rules"
+          :rules="[rules.required, rules.number, rules.min, rules.max]"
           label="Nota A1"
           class="w-full md:w-1/2 p-2"
           type="number"
         ></v-text-field>
         <v-text-field
           v-model="nota2"
-          :rules="rules"
+          :rules="[rules.required, rules.number, rules.min, rules.max]"
           label="Nota A2"
           class="w-full md:w-1/2 p-2"
           type="number"
@@ -52,7 +52,12 @@ export default {
       nota1: null,
       nota2: null,
       loading: false,
-      rules: [],
+      rules: {
+        required: (value) => !!value || "Campo obrigatório",
+        number: (value) => !isNaN(value) || "Deve ser um número",
+        min: (value) => value >= 0 || "Deve ser maior ou igual a 0",
+        max: (value) => value <= 10 || "Deve ser menor ou igual a 10",
+      },
       successMessage: "",
       errorMessage: "",
     };
